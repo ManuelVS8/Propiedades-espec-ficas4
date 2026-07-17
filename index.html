@@ -134,6 +134,9 @@
         .btn-play-word:active { transform:scale(.95); }
         .btn-play-word svg { width:18px; height:18px; margin-left:2px; pointer-events:none; }
         .image-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:14px; width:100%; max-width:640px; margin:0 auto; }
+        @media (min-width:600px) {
+            .image-grid { grid-template-columns:repeat(5, 1fr); max-width:1000px; }
+        }
         @media (max-width:480px) {
             .image-grid { gap:10px; }
         }
@@ -278,7 +281,7 @@
             <div class="game3-word-card">
                 <div class="game3-word-text-block">
                     <span class="game3-word-eyebrow" id="game3Eyebrow">Encuentra:</span>
-                    <span id="game3WordText">Conductor</span>
+                    <span id="game3WordText">Conductividad</span>
                 </div>
                 <button class="btn-play-word" id="btnPlayWord3" title="Escuchar">
                     <svg viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 20,12 6,20"></polygon></svg>
@@ -366,7 +369,7 @@ const game2TotalPairs = 5;
 ===================================================== */
 const game3Data = {
     es: [
-        { text:"Conductor", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Propiedades/Conductor.png" },
+        { text:"Conductividad", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Propiedades/Conductor.png" },
         { text:"Dureza", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Propiedades/Diamante.png" },
         { text:"Flotabilidad", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Propiedades/Flotador.png" },
         { text:"Elasticidad", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Propiedades/Goma.png" },
@@ -378,7 +381,7 @@ const game3Data = {
         { text:"Densidad", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Propiedades/Densidad.png" }
     ],
     en: [
-        { text:"Conductor", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Propiedades/Conductor.png" },
+        { text:"Conductivity", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Propiedades/Conductor.png" },
         { text:"Hardness", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Propiedades/Diamante.png" },
         { text:"Buoyancy", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Propiedades/Flotador.png" },
         { text:"Elasticity", img:"https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO4/Propiedades/Goma.png" },
