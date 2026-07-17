@@ -321,46 +321,45 @@
 
 <script>
 /* ====================================================
-   DATOS DEL JUEGO 1: EMPAREJAR (Propiedad - Definición) - Bloque 1/2
+   DATOS DE LOS JUEGOS 1 y 2: EMPAREJAR (Propiedad - Definición)
+   Las 10 propiedades se reparten aleatoriamente (5+5) entre las
+   pantallas de juego 1 y 2 en cada partida, para que no salgan
+   siempre las mismas en el mismo bloque.
 ===================================================== */
-const game1Data = {
+const propertiesData = {
     es: [
         { id:0, term:"Resistencia", def:"Es difícil de romper" },
         { id:1, term:"Dureza", def:"Es difícil de rayar" },
         { id:2, term:"Elasticidad", def:"Al deformarlo, recupera su forma" },
         { id:3, term:"Plasticidad", def:"Al deformarlo, no recupera su forma" },
-        { id:4, term:"Magnetismo", def:"Atrae a materiales como el hierro o acero" }
+        { id:4, term:"Magnetismo", def:"Atrae a materiales como el hierro o acero" },
+        { id:5, term:"Conductividad", def:"Deja pasar la corriente (conductores) o no (aislantes)" },
+        { id:6, term:"Solubilidad", def:"Se disuelve en el agua" },
+        { id:7, term:"Comportamiento ante la luz", def:"Puede ser transparente, opaco o traslúcido" },
+        { id:8, term:"Densidad", def:"Es la relación entre la masa y el volumen" },
+        { id:9, term:"Flotabilidad", def:"Flota sobre un líquido" }
     ],
     en: [
         { id:0, term:"Resistance", def:"It is difficult to break" },
         { id:1, term:"Hardness", def:"It is difficult to scratch" },
         { id:2, term:"Elasticity", def:"When deformed, it recovers its shape" },
         { id:3, term:"Plasticity", def:"When deformed, it does not recover its shape" },
-        { id:4, term:"Magnetism", def:"It attracts materials such as iron or steel" }
+        { id:4, term:"Magnetism", def:"It attracts materials such as iron or steel" },
+        { id:5, term:"Conductivity", def:"It lets electric current pass (conductors) or not (insulators)" },
+        { id:6, term:"Solubility", def:"It dissolves in water" },
+        { id:7, term:"Behaviour towards light", def:"It can be transparent, opaque or translucent" },
+        { id:8, term:"Density", def:"It is the relation between mass and volume" },
+        { id:9, term:"Buoyancy", def:"It floats on a liquid" }
     ]
 };
-const game1TotalPairs = game1Data.es.length;
+const PROPERTIES_TOTAL = propertiesData.es.length; // 10
 
-/* ====================================================
-   DATOS DEL JUEGO 2: EMPAREJAR (Propiedad - Definición) - Bloque 2/2
-===================================================== */
-const game2Data = {
-    es: [
-        { id:0, term:"Conductividad", def:"Deja pasar la corriente (conductores) o no (aislantes)" },
-        { id:1, term:"Solubilidad", def:"Se disuelve en el agua" },
-        { id:2, term:"Comportamiento ante la luz", def:"Puede ser transparente, opaco o traslúcido" },
-        { id:3, term:"Densidad", def:"Es la relación entre la masa y el volumen" },
-        { id:4, term:"Flotabilidad", def:"Flota sobre un líquido" }
-    ],
-    en: [
-        { id:0, term:"Conductivity", def:"It lets electric current pass (conductors) or not (insulators)" },
-        { id:1, term:"Solubility", def:"It dissolves in water" },
-        { id:2, term:"Behaviour towards light", def:"It can be transparent, opaque or translucent" },
-        { id:3, term:"Density", def:"It is the relation between mass and volume" },
-        { id:4, term:"Buoyancy", def:"It floats on a liquid" }
-    ]
-};
-const game2TotalPairs = game2Data.es.length;
+// Reparto aleatorio 5+5 entre pantalla de juego 1 y 2, generado una vez por partida
+// (ids de propertiesData, no índices de array; se recalcula en cada initGame1())
+let game1PropertyIds = [];
+let game2PropertyIds = [];
+const game1TotalPairs = 5;
+const game2TotalPairs = 5;
 
 /* ====================================================
    DATOS DEL JUEGO 3: GRID CON IMÁGENES
@@ -708,12 +707,19 @@ document.getElementById('continueBtn').addEventListener('click', () => {
 });
 
 /* ====================================================
-   JUEGO 1: EMPAREJAR (Propiedad - Definición)
+   JUEGO 1: EMPAREJAR (Propiedad - Definición) - Bloque 1/2
 ===================================================== */
 function initGame1() {
     document.getElementById('timerDisplay').textContent = formatTime(Date.now() - startTime);
     game1Matches = 0;
     game1SelectedCard = null;
+
+    // Reparto aleatorio 5+5 de las 10 propiedades entre juego 1 y juego 2,
+    // generado una vez por partida para que no salgan siempre las mismas en cada bloque.
+    const allIds = shuffleArray(Array.from({ length: PROPERTIES_TOTAL }, (_, i) => i));
+    game1PropertyIds = allIds.slice(0, 5);
+    game2PropertyIds = allIds.slice(5, 10);
+
     updateProgress();
     buildMatchCards1();
 }
@@ -721,12 +727,11 @@ function initGame1() {
 function buildMatchCards1() {
     const container = document.getElementById('game1Container');
     container.innerHTML = '';
-    const data = game1Data[currentLang];
-    const indices = Array.from({ length: data.length }, (_, i) => i);
+    const indices = Array.from({ length: game1PropertyIds.length }, (_, i) => i);
     const termOrder = shuffleArray(indices);
     const defOrder = shuffleArray(indices);
 
-    for (let row = 0; row < data.length; row++) {
+    for (let row = 0; row < indices.length; row++) {
         container.appendChild(createMatchCard(termOrder[row], 'term', 1));
         container.appendChild(createMatchCard(defOrder[row], 'def', 1));
     }
@@ -734,7 +739,7 @@ function buildMatchCards1() {
 }
 
 /* ====================================================
-   JUEGO 2: EMPAREJAR (Propiedad - Ejemplo)
+   JUEGO 2: EMPAREJAR (Propiedad - Definición) - Bloque 2/2
 ===================================================== */
 function initGame2() {
     document.getElementById('timerDisplay2').textContent = formatTime(Date.now() - startTime);
@@ -747,25 +752,25 @@ function initGame2() {
 function buildMatchCards2() {
     const container = document.getElementById('game2Container');
     container.innerHTML = '';
-    const data = game2Data[currentLang];
-    const indices = Array.from({ length: data.length }, (_, i) => i);
+    const indices = Array.from({ length: game2PropertyIds.length }, (_, i) => i);
     const termOrder = shuffleArray(indices);
     const defOrder = shuffleArray(indices);
 
-    for (let row = 0; row < data.length; row++) {
+    for (let row = 0; row < indices.length; row++) {
         container.appendChild(createMatchCard(termOrder[row], 'term', 2));
         container.appendChild(createMatchCard(defOrder[row], 'def', 2));
     }
     container.onclick = (e) => handleMatchCardClick(e, 2);
 }
 
-function createMatchCard(origIndex, type, gameNum) {
+function createMatchCard(localIndex, type, gameNum) {
     const card = document.createElement('div');
     card.className = 'memory-card';
-    card.dataset.origIndex = origIndex;
+    card.dataset.origIndex = localIndex;
     card.dataset.type = type;
-    const data = gameNum === 1 ? game1Data : game2Data;
-    const item = data[currentLang][origIndex];
+    const propertyIds = gameNum === 1 ? game1PropertyIds : game2PropertyIds;
+    const propertyId = propertyIds[localIndex];
+    const item = propertiesData[currentLang][propertyId];
     card.textContent = type === 'term' ? item.term : item.def;
     return card;
 }
